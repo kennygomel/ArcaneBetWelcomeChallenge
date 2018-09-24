@@ -1,0 +1,6 @@
+# Ignore IDEA config.
+/.idea
+
+# Ignore image directories
+/db/*
+/redis/*

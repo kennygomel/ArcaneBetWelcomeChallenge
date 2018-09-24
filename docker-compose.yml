@@ -1,0 +1,43 @@
+version: '3'
+services:
+  db:
+    image: postgres:10.5
+    container_name: arcanebet-db
+    environment:
+      - POSTGRES_DB=arcanebet
+      - POSTGRES_USER=arcanebet
+      - POSTGRES_PASSWORD=arcanebet
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    depends_on:
+      - redis
+  redis:
+    image: redis:4.0.11-alpine
+    container_name: arcanebet-redis
+    volumes:
+      - ./redis:/data
+    ports:
+      - "6379:6379"
+  api:
+    build: ./api
+    container_name: arcanebet-api
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_NAME=arcanebet
+      - DATABASE_USERNAME=arcanebet
+      - DATABASE_PASSWORD=arcanebet
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  app:
+    build: ./app
+    container_name: arcanebet-app
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    depends_on:
+      - api

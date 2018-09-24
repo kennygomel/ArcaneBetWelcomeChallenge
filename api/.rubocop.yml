@@ -1,0 +1,18 @@
+require: rubocop-rspec
+AllCops:
+  TargetRubyVersion: 2.5.1
+  Exclude:
+  - bin/**
+  - config/**
+  - config/**/**
+  - db/**
+  - lib/**
+  - log/**
+  - public/**
+  - storage/**
+  - spec/**
+  - spec/**/**
+  - tmp/**
+  - vendor/**
+Documentation:
+  Enabled: false
