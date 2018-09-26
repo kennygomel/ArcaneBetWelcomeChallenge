@@ -32,6 +32,11 @@ class UserController < ApplicationController
     @user.destroy
   end
 
+  # GET /me
+  def me
+    render json: UserSerializer.new(current_user).serialized_json
+  end
+
   private
 
   def set_user

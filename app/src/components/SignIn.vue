@@ -64,34 +64,29 @@ export default {
       this.signingIn = true
       this.$http.plain.post('/signin', { email: this.email, password: this.password })
         .then(response => this.signinSuccessful(response))
-        .catch(error => this.signinFailed(error))
+        .catch(error => this.signinFailed(error, 'Cannot sign you in'))
     },
     signinSuccessful (response) {
       if (!response.data.csrf) {
-        this.signinFailed(response)
+        this.signinFailed(response, 'Cannot sign you in')
         return
       }
-      localStorage.csrf = response.data.csrf
-      this.$http.plain.get('/user/0')
-        .then(response => {
-          localStorage.signedIn = true
-          localStorage.setItem('currentUser', JSON.stringify(response.data.data.attributes))
+      this.$http.plain.get('/me')
+        .then(meResponse => {
+          this.$store.commit('setCurrentUser',
+            { currentUser: meResponse.data.data.attributes, csrf: response.data.csrf })
+          this.$router.replace('/stock')
           window.location.reload()
         })
-        .catch(error => {
-          this.setError(error, 'Cannot get your profile')
-          this.signingIn = false
-        })
+        .catch(error => this.signinFailed(error, 'Cannot get your profile'))
     },
-    signinFailed (error) {
-      this.setError(error, 'Cannot sign you in')
-      delete localStorage.signedIn
-      delete localStorage.currentUser
-      delete localStorage.csrf
+    signinFailed (error, message) {
+      this.setError(error, message)
       this.signingIn = false
+      this.$store.commit('unsetCurrentUser')
     },
     checkSignedIn () {
-      if (localStorage.signedIn) {
+      if (this.$store.state.signedIn) {
         this.$router.replace('/stock')
       }
     }

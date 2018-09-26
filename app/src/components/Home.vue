@@ -40,6 +40,18 @@ export default {
       profit: null
     }
   },
+  computed: {
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    }
+  },
+  created () {
+    if (this.signedIn) {
+      this.$router.replace('/stock')
+    }
+  },
   methods: {
     updateStock: function () {
       if (this.price && this.interest && this.duration) {

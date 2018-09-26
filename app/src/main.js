@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 import router from './router'
 
+import {store} from './store'
+
 import VueAxios from 'vue-axios'
 import {securedAxiosInstance, plainAxiosInstance} from './backend/axios'
 
@@ -77,6 +79,7 @@ Vue.filter('currency', function (value, decimals) {
 new Vue({
   el: '#app',
   router,
+  store,
   securedAxiosInstance,
   plainAxiosInstance,
   components: {App},

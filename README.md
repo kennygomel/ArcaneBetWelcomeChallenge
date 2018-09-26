@@ -9,7 +9,7 @@ Make sure that you have installed Docker first
 Use these commands to run the project
 
 ```
-git clone ___ ArcaneBet
+git clone https://github.com/kennygomel/ArcaneBetWelcomeChallenge-Docker.git ArcaneBet
 
 cd ArcaneBet
 

@@ -28,8 +28,6 @@ context('Actions', () => {
 
     cy.get('.form-edit-profile').submit()
 
-    cy.visit('/')
-
     cy.get('.nav-item .dropdown-toggle em')
     .should('contain', 'Test')
   })

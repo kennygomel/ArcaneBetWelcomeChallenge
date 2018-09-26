@@ -10,9 +10,9 @@
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <router-link v-if="signedIn" tag="a" class="nav-link" :to="{ name: 'StockList'}" active-class="active"
+          <router-link v-if="signedIn" tag="a" class="nav-link" :to="{ name: 'StockAdd'}" active-class="active"
             replace>
-            <font-awesome-icon icon="list" class="mr-2"/> Stocks
+            <font-awesome-icon icon="plus" class="mr-2"/> Add Stock
           </router-link>
         </b-navbar-nav>
 
@@ -50,19 +50,20 @@ import md5 from 'js-md5'
 export default {
   name: 'App',
   computed: {
-    signedIn: {
-      get: function () {
-        return localStorage.signedIn
-      }
-    },
     currentUser: {
       get: function () {
-        return localStorage.currentUser ? JSON.parse(localStorage.currentUser) : null
+        return this.$store.state.currentUser
+      }
+    },
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
       }
     },
     gravatarUrl: {
       get: function () {
-        const hash = this.currentUser ? md5(this.currentUser.email.toLowerCase()) : md5('')
+        const hash = this.$store.state.currentUser
+          ? md5(this.$store.state.currentUser.email.toLowerCase()) : md5('')
         return `https://www.gravatar.com/avatar/${hash}?s=18&d=mp&r=g`
       }
     }
@@ -74,9 +75,7 @@ export default {
     signOut () {
       this.$http.secured.delete('/signin')
         .then(response => {
-          delete localStorage.signedIn
-          delete localStorage.currentUser
-          delete localStorage.csrf
+          this.$store.commit('unsetCurrentUser')
           this.$router.replace('/')
           window.location.reload()
         })
@@ -87,6 +86,9 @@ export default {
 </script>
 
 <style scoped>
+  #app {
+    margin-bottom: 4rem;
+  }
   .avatar {
     display: inline-block;
     margin-top: -.25rem;

@@ -11,13 +11,11 @@ context('Actions', () => {
     .type('cypress').should('have.value', 'cypress')
 
     cy.get('.form-signin').submit()
-
-    cy.visit('/#/stock')
   })
 
   it('try to create stock', () => {
 
-    cy.get('.btn-stock-add').click()
+    cy.get('.link-stock-add').click()
 
     cy.get('#name')
     .type('cypress stock').should('have.value', 'cypress stock')

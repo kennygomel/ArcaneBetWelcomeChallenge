@@ -79,10 +79,12 @@ export default {
   computed: {
     currentUser: {
       get: function () {
-        return JSON.parse(localStorage.getItem('currentUser'))
-      },
-      set: function (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user))
+        return this.$store.state.currentUser
+      }
+    },
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
       }
     },
     gravatarProfile: {
@@ -106,7 +108,7 @@ export default {
     }
   },
   created () {
-    if (localStorage.signedIn) {
+    if (this.signedIn) {
       if (this.currentUser) {
         this.email = this.currentUser.email
         this.first = this.currentUser.first
@@ -134,7 +136,12 @@ export default {
       }
       this.$http.secured.patch(`/user/${this.currentUser.id}`, userData)
         .then(() => {
-          this.currentUser = userData
+          if (userData.password && userData.password_confirmation) {
+            delete userData.password
+            delete userData.password_confirmation
+          }
+          this.$store.commit('setCurrentUser',
+              {currentUser: userData, csrf: this.$store.state.csrf})
           window.location.reload()
         })
         .catch(error => {
