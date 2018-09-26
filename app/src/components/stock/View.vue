@@ -47,14 +47,22 @@ export default {
       error: null
     }
   },
+  computed: {
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    }
+  },
   created () {
-    if (localStorage.signedIn) {
+    if (this.signedIn) {
       this.$http.secured.get(`/stock/${this.$route.params.id}`)
         .then(response => {
           this.stock = response.data
         })
         .catch(error => this.setError(error, 'Cannot get stock'))
     } else {
+      this.$store.commit('unsetCurrentUser')
       this.$router.replace('/signin')
     }
   },

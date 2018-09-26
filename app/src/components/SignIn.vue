@@ -42,6 +42,11 @@ export default {
     }
   },
   computed: {
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    },
     valid: {
       get: function () {
         // eslint-disable-next-line
@@ -51,9 +56,6 @@ export default {
     }
   },
   created () {
-    this.checkSignedIn()
-  },
-  updated () {
     this.checkSignedIn()
   },
   methods: {
@@ -86,7 +88,7 @@ export default {
       this.$store.commit('unsetCurrentUser')
     },
     checkSignedIn () {
-      if (this.$store.state.signedIn) {
+      if (this.signedIn) {
         this.$router.replace('/stock')
       }
     }

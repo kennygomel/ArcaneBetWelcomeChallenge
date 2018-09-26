@@ -111,8 +111,15 @@ export default {
       ]
     }
   },
+  computed {
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    }
+  },
   created () {
-    if (localStorage.signedIn) {
+    if (this.signedIn) {
       this.$http.secured.get('/stock')
         .then(response => {
           this.stocks = response.data
@@ -120,6 +127,7 @@ export default {
         })
         .catch(error => this.setError(error, 'Cannot get stocks'))
     } else {
+      this.$store.commit('unsetCurrentUser')
       this.$router.replace('/signin')
     }
   },
@@ -133,11 +141,6 @@ export default {
           this.stocks.splice(this.stocks.indexOf(stock), 1)
         })
         .catch(error => this.setError(error, 'Cannot delete stock'))
-    }
-  },
-  directives: {
-    'stock-focus': function (el) {
-      el.focus()
     }
   }
 }

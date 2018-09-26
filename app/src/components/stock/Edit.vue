@@ -76,6 +76,11 @@ export default {
         return this.$route.params.id
       }
     },
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    },
     valid: {
       get: function () {
         return this.name && this.price && this.interest && this.duration && (
@@ -90,7 +95,7 @@ export default {
     }
   },
   created () {
-    if (localStorage.signedIn) {
+    if (this.signedIn) {
       if (this.id) {
         this.$http.secured.get(`/stock/${this.id}`)
           .then(response => {
@@ -106,6 +111,7 @@ export default {
         this.loading = false
       }
     } else {
+      this.$store.commit('unsetCurrentUser')
       this.$router.replace('/signin')
     }
   },

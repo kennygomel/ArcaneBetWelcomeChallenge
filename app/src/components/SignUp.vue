@@ -50,6 +50,11 @@ export default {
     }
   },
   computed: {
+    signedIn: {
+      get: function () {
+        return this.$store.state.signedIn
+      }
+    },
     valid: {
       get: function () {
         // eslint-disable-next-line
@@ -61,9 +66,6 @@ export default {
     }
   },
   created () {
-    this.checkSignedIn()
-  },
-  updated () {
     this.checkSignedIn()
   },
   methods: {
@@ -101,7 +103,7 @@ export default {
       this.signingUp = false
     },
     checkSignedIn () {
-      if (localStorage.signedIn) {
+      if (this.signedIn) {
         this.$router.replace('/stock')
       }
     }
