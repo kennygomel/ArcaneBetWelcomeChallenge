@@ -1,17 +1,7 @@
 <template>
   <div class="container">
     <div v-if="error" class="alert alert-danger mb-4">{{ error }}</div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-8">
-        <h1 class="mb-4">Your Stocks</h1>
-      </div>
-      <div class="col-xs-12 col-sm-4 text-right">
-        <router-link tag="a" class="btn btn-success mt-2 btn-stock-add" :to="{ name: 'StockAdd'}"
-                     replace>
-          <font-awesome-icon icon="plus" class="mr-1"/> Add New
-        </router-link>
-      </div>
-    </div>
+    <h1 class="mb-4">Your Stocks</h1>
     <b-table striped hover :items="stocks" :fields="fields" v-if="!loading">
       <template slot="name" slot-scope="data">
         <router-link tag="a" class="link-stock-view" :to="{name: 'StockView', params: {id: data.item.id}}">
