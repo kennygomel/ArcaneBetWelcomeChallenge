@@ -111,7 +111,7 @@ export default {
       ]
     }
   },
-  computed {
+  computed: {
     signedIn: {
       get: function () {
         return this.$store.state.signedIn

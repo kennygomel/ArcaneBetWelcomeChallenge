@@ -142,7 +142,7 @@ export default {
             delete userData.password_confirmation
           }
           this.$store.commit('setCurrentUser',
-              {currentUser: userData, csrf: this.$store.state.csrf})
+            {currentUser: userData, csrf: this.$store.state.csrf})
           window.location.reload()
         })
         .catch(error => {
